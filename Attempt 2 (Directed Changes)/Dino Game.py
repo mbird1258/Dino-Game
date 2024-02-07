@@ -10,7 +10,7 @@ print("\n\n")
 # screen class
 class screen:
 	"""Handles the creation of the screen and obstacles."""
-	def __init__(self, amount_of_players = 1, generations = np.inf, start_scroll_speed = 6, max_scroll_speed = 50, save_interval = 50, save_folder = "trained_model", save_name = "3"):
+	def __init__(self, amount_of_players = 1, generations = np.inf, start_scroll_speed = 6, max_scroll_speed = 50, save_interval = 50, save_folder = "trained_model", save_name = "1"):
 		# variables
 		self.amount_of_players = amount_of_players
 		self.trial = 1
@@ -153,7 +153,7 @@ class screen:
 					player.transitions = player.transitions[len(player.transitions)-player.minibatch_maximum::]
 
 				for state in player.transitions[np.random.choice(player.transitions.shape[0], 64, replace=False)]:
-					list_of_deltas.append(player.backpropogate(*state))
+					list_of_deltas.append(player.backpropagate(*state))
 
 				average_deltas = [np.zeros(layer.shape) for layer in player.weight_layers]
 
@@ -246,7 +246,7 @@ class screen:
 # neural network class
 class neural_network:
 	"""Parent class for neural network based operations."""
-	def __init__(self, game, nodes = [4, 24, 4], adjustment_rate = 0.01, adjustment_rate_falloff = 1, backwards_propogation_algorithm = 1, loss_function = 2, activation_functions = [2,0], neural_network_type = 1, gamma = 0.9, gamma_increase = 1.00, gamma_max = 0.9, minibatch_minimum = 5000, minibatch_maximum = 100000, weight_decay_factor = 0.01):
+	def __init__(self, game, nodes = [4, 24, 4], adjustment_rate = 0.001, adjustment_rate_falloff = 1, backwards_propogation_algorithm = 1, loss_function = 2, activation_functions = [2,0], neural_network_type = 1, gamma = 0.95, gamma_increase = 1.00, gamma_max = 0.95, minibatch_minimum = 5000, minibatch_maximum = 100000, weight_decay_factor = 0.01):
 		# assign variables
 		self.game = game
 		self.gamma = gamma # discount factor (how much next rewards are scaled down when summed; r_t + gamma * r_t+1 + gamma**2 * r_t+2 ...)
@@ -637,7 +637,7 @@ class neural_network:
 	"""
 
 
-	def backpropogate(self, start_state, action, reward, next_state, not_terminated, clip_max = 1):
+	def backpropagate(self, start_state, action, reward, next_state, not_terminated, clip_max = 1):
 		y = self.forward_propogate(start_state)
 		a = copy.deepcopy(y)
 
@@ -657,7 +657,10 @@ class neural_network:
 			delta_weight_layers.insert(0, (layer_derivative.T @ self.instance_normalization(node_layer)).T * self.adjustment_rate)
 			delta_weight_layers[0][1::] += decay[index]
 
-			layer_derivative = self.clip((self.weight_layers[index][1::] @ layer_derivative.T).T * self.instance_normalization_derivative(self.node_layers[index][0, 1::]) * self.gradient_descent_funcs[1][index-1](self.instance_normalization(self.node_layers[index-1]) @ self.weight_layers[index-1]), max = clip_max)
+			if index > 1:
+				layer_derivative = self.clip((self.weight_layers[index][1::] @ layer_derivative.T).T * self.instance_normalization_derivative(self.node_layers[index][0, 1::]) * self.gradient_descent_funcs[1][index-1](self.instance_normalization(self.node_layers[index-1]) @ self.weight_layers[index-1]), max = clip_max)
+			else:
+				layer_derivative = self.clip((self.weight_layers[index][1::] @ layer_derivative.T).T * self.gradient_descent_funcs[1][index-1](self.node_layers[index-1] @ self.weight_layers[index-1]), max = clip_max)
 		else:
 			delta_weight_layers.insert(0, (layer_derivative.T @ self.instance_normalization(self.node_layers[0])).T * self.adjustment_rate)
 			delta_weight_layers[0][1::] += decay[0]
@@ -757,7 +760,7 @@ class neural_network:
 # player class
 class player_class(neural_network):
 	"""Contains a player's neural network, controls and other functions."""
-	def __init__(self, game, death_score = -1, live_score = 1, exploration_rate = 0.1, exploration_rate_falloff = 0.99, minimum_exploration_rate = 0.001):
+	def __init__(self, game, death_score = -1, live_score = 1, exploration_rate = 0.1, exploration_rate_falloff = 0.9995, minimum_exploration_rate = 0.001):
 		self.neural_network = super()
 		self.neural_network.__init__(game)
 
@@ -883,7 +886,7 @@ class player_class(neural_network):
 		self.transitions = np.append(self.transitions, [[-1, -1, -1, -1, -1]], axis = 0)
 
 		if len(self.transitions) == 1:
-			next_obstacle = self.game.obstacles[self.game.obstacles[:, 3] > self.x-10][0]
+			next_obstacle = self.game.obstacles[self.game.obstacles[:, 3] > self.x][0]
 			self.transitions[-1, 0] = [(self.game.ground_y_value-self.y)/120, (self.game.scroll_speed)/50, (next_obstacle[1]-self.x)/250, (self.game.ground_y_value-next_obstacle[4])/155]
 		else:
 			self.transitions[-1, 0] = self.transitions[-2, 3]
@@ -903,7 +906,7 @@ class player_class(neural_network):
 
 		self.transitions[-1, [2,4]] = self.detect_collision()
 		
-		next_obstacle = self.game.obstacles[self.game.obstacles[:, 3] > self.x-10][0]
+		next_obstacle = self.game.obstacles[self.game.obstacles[:, 3] > self.x][0]
 		self.transitions[-1, 3] = [(self.game.ground_y_value-self.y)/120, (self.game.scroll_speed)/50, (next_obstacle[1]-self.x)/250, (self.game.ground_y_value-next_obstacle[4])/155]
 
 		self.vy -= 1
@@ -991,3 +994,8 @@ game.alive_players[0].id = 1#
 
 while True:
 	game.update()
+
+
+
+
+
