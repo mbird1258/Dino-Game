@@ -73,7 +73,7 @@ The player is a rectangle with three possible actions: jumping, dropping and duc
 #### Neural Network
 
 ##### Structure
-The neural network is a feed forward neural network that takes in the player’s height above ground, next obstacle’s distance, screen scroll speed, and the next obstacle upper y value. Then, it passes through one hidden layer with 24 nodes, ending up in an output layer with 4 nodes. The player decides to jump, drop, duck, or do nothing based on the output node with the highest value. 
+The neural network is a feed forward neural network that takes in the player’s height above ground, player's y velocity, the next obstacle’s distance, screen scroll speed, the next obstacle's lower y value, and the next obstacle's upper y value. Then, it passes through one hidden layer with 24 nodes, ending up in an output layer with 4 nodes. The player decides to jump, drop, duck, or do nothing based on the output node with the highest value. 
 
 I chose 24 hidden nodes to make sure that the neural network could accurately represent the return of each action(which it is learning to do because it learns based off of Deep Q learning). [(Desmos link)](https://www.desmos.com/calculator/5pipewvgfe)
 
