@@ -13,7 +13,7 @@ My plan for this game is to replicate the iconic dinosaur game and train a model
 #### The Game
 
 ##### The Screen
-The program uses tkinter to create the visuals for the screen and obstacles. The coordinates of each obstacle are added to a 2D matrix for use in collision detection and to delete off screen objects. 
+The program uses tkinter to create the visuals for the screen and obstacles. The coordinates of each obstacle are added to a 2D matrix for use in collision detection and to delete off screen objects.  
 
 To scroll the screen, the program deducts the scroll speed from every obstacle’s x value. When an obstacle goes off screen (right x value < 0), the program deletes the obstacle and then recreates another one in its place so that the obstacles never run out. 
 
@@ -73,9 +73,9 @@ The player is a rectangle with three possible actions: jumping, dropping and duc
 #### Neural Network
 
 ##### Structure
-The neural network is a feed forward neural network that takes in the player’s height above ground, player's y velocity, the next obstacle’s distance, screen scroll speed, the next obstacle's lower y value, and the next obstacle's upper y value. Then, it passes through one hidden layer with 24 nodes, ending up in an output layer with 4 nodes. The player decides to jump, drop, duck, or do nothing based on the output node with the highest value. 
+The neural network is a feed forward neural network that takes in the player’s height above ground, next obstacle’s distance, screen scroll speed, and the next obstacle upper y value. Then, it passes through two hidden layers with 250 nodes each, ending up in an output layer with 4 nodes. The player decides to jump, drop, duck, or do nothing based on the output node with the highest value. 
 
-I chose 24 hidden nodes to make sure that the neural network could accurately represent the return of each action(which it is learning to do because it learns based off of Deep Q learning). [(Desmos link)](https://www.desmos.com/calculator/5pipewvgfe)
+I chose 250 hidden nodes and 2 hidden layers to make sure that the neural network could accurately represent the return of each action. We need a curved graph of returns because our return graph should be similar to an exponential function due to the way q learning calculates return with a discount factor. In addition, we are using the LReLU activation function, so to get a curved shape we need a lot of hidden nodes. 
 
 #### Forward Propagation
 For forward propagation, the neural network follows the following process: 
@@ -195,4 +195,4 @@ To save the neural network, we save the numpy array to a predetermined file with
 
 ### Results
 
-The neural network performs pretty well, consistently learning to jump over the cacti. However, it struggles to learn to drop after passing the cacti and thus often gets stuck not jumping in time due to a lack of space between cacti. This can likely be fixed through training for longer or perfecting the hyperparameters of the neural network, but I'm satisfied with these results as my version of the dinosaur game is, at least from what I can tell, considerably harder than the real dinosaur game. 
+The neural network seems to have worked pretty well. It learns to jump over cacti and duck under birds relatively consistently, but it seems to struggle learning to deal with the increasing scroll speed of the game. With better hyperparameter fine tuning it would likely be possible to achieve a better model. Then again, I think that the dino game I made to train this model for is much harder than the real dino game so I'm still happy with the results. 
