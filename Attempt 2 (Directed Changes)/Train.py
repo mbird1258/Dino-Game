@@ -870,7 +870,7 @@ class player_class(neural_network):
 			if render_graph: self.neural_network.forward_propogate(state)
 			decision = np.random.randint(0, self.nodes[-1])
 		else:
-			decision = np.argmax(self.neural_network.forward_propogate(state)) # altitude, scroll speed, distance to next obstacle, next obstacle altitude, next obstacle altitude + height
+			decision = np.argmax(self.neural_network.forward_propogate(state))
 
 		match decision:
 			case 0:
