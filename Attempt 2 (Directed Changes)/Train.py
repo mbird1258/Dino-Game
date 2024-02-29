@@ -30,7 +30,7 @@ class screen:
 		self.ground_height = 100
 		self.ground_y_value = self.canvas_height - self.ground_height
 
-		self.obstacles = np.array([[-1, 200, -1, 200, -1]]) # [[tkinter shape, x1, y1, x2, y2], ...]; we set this to -1 200 -1 200 -1 because we need an initial x value to base our initial obstacles' x values off of
+		self.obstacles = np.array([[-1, 500, -1, 500, -1]]) # [[tkinter shape, x1, y1, x2, y2], ...]; we set this to -1 200 -1 200 -1 because we need an initial x value to base our initial obstacles' x values off of
 		self.distance = 0
 
 		self.alive_players = np.array([]) # [player, ...]
@@ -210,7 +210,7 @@ class screen:
 	def finish(self):
 		"""End of round"""
 		self.scroll_speed = 6
-		self.obstacles = np.array([[-1, 200, -1, 200, -1]])
+		self.obstacles = np.array([[-1, 500, -1, 500, -1]])
 		self.distance = 0
 		self.alive_players = self.dead_players[:, 0]
 		self.dead_players = np.empty((0,2))
@@ -765,7 +765,7 @@ class neural_network:
 # player class
 class player_class(neural_network):
 	"""Contains a player's neural network, controls and other functions."""
-	def __init__(self, game, death_score = -5, live_score = 1, exploration_rate = 0.2, exploration_rate_falloff = 0.9998, minimum_exploration_rate = 0.001):
+	def __init__(self, game, death_score = -5, live_score = 1, exploration_rate = 0.2, exploration_rate_falloff = 0.9995, minimum_exploration_rate = 0.001):
 		self.neural_network = super()
 		self.neural_network.__init__(game)
 
