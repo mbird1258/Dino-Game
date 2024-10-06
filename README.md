@@ -1,5 +1,9 @@
 Dino Game with ML from Scratch
 ==============================
+### Youtube Videos
+[![Demo Video 1](https://img.youtube.com/vi/wT0GU41JocQ/0.jpg)](https://www.youtube.com/watch?v=wT0GU41JocQ)
+[![Demo Video 2](https://img.youtube.com/vi/M9TGqmvseLw/0.jpg)](https://www.youtube.com/watch?v=M9TGqmvseLw)
+
 My goal for this project was to ensure that I can implement a basic neural network and make it change to complete a task, which I decided to achieve by making a game with simple rules that should be possible for machine learning to complete with ease. In addition, I should be able to mostly reuse the neural network class for any future projects. 
 
 Attempt 1 (Random Changes)
