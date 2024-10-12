@@ -1,5 +1,7 @@
 Dino Game with ML from Scratch
 ==============================
+Blog post: [https://matthew-bird.com/blogs/Dino-Game-ML.html](https://matthew-bird.com/blogs/Dino-Game-ML.html)
+
 ### Youtube Videos
 [![Demo Video 1](https://img.youtube.com/vi/wT0GU41JocQ/0.jpg)](https://www.youtube.com/watch?v=wT0GU41JocQ)
 [![Demo Video 2](https://img.youtube.com/vi/M9TGqmvseLw/0.jpg)](https://www.youtube.com/watch?v=M9TGqmvseLw)
